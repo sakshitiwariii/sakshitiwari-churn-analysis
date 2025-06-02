@@ -1,0 +1,52 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+venv/
+env/
+.python-version
+pip-log.txt
+
+# === Data & Models ===
+*.csv         # Exclude raw data (if not tracked)
+*.xlsx
+*.pkl         # Serialized models (if large/sensitive)
+*.joblib
+*.h5
+*.feather
+*.parquet
+data/         # Exclude local data folders
+models/       # Exclude trained models (if large)
+
+# === Jupyter/Notebooks ===
+.ipynb_checkpoints/
+*.ipynb
+
+# === Environment & Secrets ===
+.env
+.env.local
+.env.prod
+secrets.json
+config.yml
+
+# === IDE & Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Build/Test Artifacts ===
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+*.sqlite3
+
+# === OS & Temp Files ===
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
