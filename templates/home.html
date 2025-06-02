@@ -1,0 +1,340 @@
+<html>
+<head>
+   <title>Churn Prediction</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   <style>
+      body {
+         font-family: 'Poppins', sans-serif;
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+         background-attachment: fixed;
+         color: #333;
+         min-height: 100vh;
+         padding: 20px 0;
+      }
+      .container {
+         background-color: rgba(255, 255, 255, 0.95);
+         border-radius: 15px;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+         padding: 30px;
+         margin-top: 30px;
+         margin-bottom: 30px;
+      }
+      .form-header {
+         text-align: center;
+         margin-bottom: 30px;
+         color: #4a4a4a;
+         position: relative;
+      }
+      .form-header h2 {
+         font-weight: 600;
+         color: #4a4a4a;
+      }
+      .header-icon {
+         font-size: 2.5rem;
+         color: #764ba2;
+         margin-bottom: 15px;
+      }
+      .form-group {
+         margin-bottom: 15px;
+      }
+      .form-control {
+         border-radius: 8px;
+         border: 1px solid #ddd;
+         transition: all 0.3s;
+      }
+      .form-control:focus {
+         border-color: #764ba2;
+         box-shadow: 0 0 0 0.2rem rgba(118, 75, 162, 0.25);
+      }
+      label {
+         font-weight: 500;
+         margin-bottom: 5px;
+         color: #555;
+         display: flex;
+         align-items: center;
+      }
+      label i {
+         margin-right: 8px;
+         color: #764ba2;
+      }
+      .btn-primary {
+         background-color: #764ba2;
+         border-color: #764ba2;
+         border-radius: 8px;
+         padding: 12px 25px;
+         font-weight: 500;
+         letter-spacing: 0.5px;
+         transition: all 0.3s;
+         margin-top: 20px;
+         width: 100%;
+         font-size: 1.1rem;
+      }
+      .btn-primary:hover {
+         background-color: #5d3a7e;
+         border-color: #5d3a7e;
+         transform: translateY(-2px);
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .result-area {
+         margin-top: 30px;
+         background-color: #f8f9fa;
+         border-radius: 8px;
+         padding: 20px;
+         position: relative;
+         overflow: hidden;
+      }
+      .result-area::before {
+         content: "";
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 5px;
+         height: 100%;
+         background: linear-gradient(to bottom, #764ba2, #667eea);
+      }
+      .result-text {
+         font-weight: 500;
+         color: #333;
+      }
+      .purple-border textarea {
+         border: 1px solid #ba68c8;
+      }
+      .form-row {
+         display: flex;
+         flex-wrap: wrap;
+         margin-right: -15px;
+         margin-left: -15px;
+      }
+      .form-section {
+         margin-bottom: 20px;
+         padding: 20px;
+         background-color: #f8f9fa;
+         border-radius: 10px;
+         position: relative;
+         overflow: hidden;
+      }
+      .form-section h4 {
+         color: #764ba2;
+         margin-bottom: 20px;
+         font-weight: 600;
+         display: flex;
+         align-items: center;
+      }
+      .form-section h4 i {
+         margin-right: 10px;
+      }
+      .section-icon {
+         position: absolute;
+         right: 20px;
+         top: 20px;
+         opacity: 0.1;
+         font-size: 3rem;
+         color: #764ba2;
+         z-index: 0;
+      }
+      .customer-img {
+         text-align: center;
+         margin-bottom: 20px;
+      }
+      .customer-img img {
+         max-width: 100%;
+         border-radius: 10px;
+         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .feature-box {
+         background: white;
+         border-radius: 10px;
+         padding: 15px;
+         margin-bottom: 20px;
+         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+         border-left: 4px solid #764ba2;
+      }
+      .feature-box h5 {
+         color: #764ba2;
+         font-weight: 600;
+      }
+      .prediction-graphic {
+         text-align: center;
+         padding: 20px;
+      }
+   </style>
+</head>
+<body>
+   <div class="container">
+      <div class="form-header">
+         <div class="header-icon">
+            <i class="fas fa-chart-line"></i>
+         </div>
+         <h2>Customer Churn Prediction</h2>
+         <p>Fill in the details to predict customer churn probability</p>
+         
+         <div class="customer-img">
+            <img src="https://img.freepik.com/free-vector/business-people-analyzing-growth-charts_1262-18984.jpg" alt="Customer Analytics" style="max-height: 200px;">
+         </div>
+      </div>
+      
+      <div class="row mb-4">
+         <div class="col-md-4">
+            <div class="feature-box">
+               <h5><i class="fas fa-bolt"></i> Real-time Prediction</h5>
+               <p>Get instant churn probability results based on customer data.</p>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="feature-box">
+               <h5><i class="fas fa-shield-alt"></i> Accurate Analysis</h5>
+               <p>Our advanced algorithm provides reliable churn predictions.</p>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="feature-box">
+               <h5><i class="fas fa-lightbulb"></i> Actionable Insights</h5>
+               <p>Identify at-risk customers and take proactive measures.</p>
+            </div>
+         </div>
+      </div>
+      
+      <form action="http://localhost:5000/" method="POST">
+         <div class="form-row">
+            <div class="col-md-6">
+               <div class="form-section">
+                  <i class="fas fa-user section-icon"></i>
+                  <h4><i class="fas fa-id-card"></i> Customer Information</h4>
+                  <div class="form-group">
+                     <label for="query1"><i class="fas fa-user-tie"></i> Senior Citizen:</label>
+                     <textarea class="form-control" rows="1" id="query1" name="query1">{{query1}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query4"><i class="fas fa-venus-mars"></i> Gender:</label>
+                     <textarea class="form-control" rows="1" id="query4" name="query4">{{query4}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query5"><i class="fas fa-heart"></i> Partner:</label>
+                     <textarea class="form-control" rows="1" id="query5" name="query5">{{query5}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query6"><i class="fas fa-users"></i> Dependents:</label>
+                     <textarea class="form-control" rows="1" id="query6" name="query6">{{query6}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query19"><i class="fas fa-calendar-alt"></i> Tenure (months):</label>
+                     <textarea class="form-control" rows="1" id="query19" name="query19">{{query19}}</textarea>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="col-md-6">
+               <div class="form-section">
+                  <i class="fas fa-money-bill-wave section-icon"></i>
+                  <h4><i class="fas fa-file-invoice-dollar"></i> Billing Information</h4>
+                  <div class="form-group">
+                     <label for="query2"><i class="fas fa-calendar-day"></i> Monthly Charges:</label>
+                     <textarea class="form-control" rows="1" id="query2" name="query2">{{query2}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query3"><i class="fas fa-hand-holding-usd"></i> Total Charges:</label>
+                     <textarea class="form-control" rows="1" id="query3" name="query3">{{query3}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query16"><i class="fas fa-file-signature"></i> Contract:</label>
+                     <textarea class="form-control" rows="1" id="query16" name="query16">{{query16}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query17"><i class="fas fa-receipt"></i> Paperless Billing:</label>
+                     <textarea class="form-control" rows="1" id="query17" name="query17">{{query17}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query18"><i class="fas fa-credit-card"></i> Payment Method:</label>
+                     <textarea class="form-control" rows="1" id="query18" name="query18">{{query18}}</textarea>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+         <div class="form-row">
+            <div class="col-md-6">
+               <div class="form-section">
+                  <i class="fas fa-phone-alt section-icon"></i>
+                  <h4><i class="fas fa-mobile-alt"></i> Phone Services</h4>
+                  <div class="form-group">
+                     <label for="query7"><i class="fas fa-phone"></i> Phone Service:</label>
+                     <textarea class="form-control" rows="1" id="query7" name="query7">{{query7}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query8"><i class="fas fa-phone-square"></i> Multiple Lines:</label>
+                     <textarea class="form-control" rows="1" id="query8" name="query8">{{query8}}</textarea>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="col-md-6">
+               <div class="form-section">
+                  <i class="fas fa-wifi section-icon"></i>
+                  <h4><i class="fas fa-globe"></i> Internet Services</h4>
+                  <div class="form-group">
+                     <label for="query9"><i class="fas fa-wifi"></i> Internet Service:</label>
+                     <textarea class="form-control" rows="1" id="query9" name="query9">{{query9}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query10"><i class="fas fa-lock"></i> Online Security:</label>
+                     <textarea class="form-control" rows="1" id="query10" name="query10">{{query10}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query11"><i class="fas fa-database"></i> Online Backup:</label>
+                     <textarea class="form-control" rows="1" id="query11" name="query11">{{query11}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query12"><i class="fas fa-shield-alt"></i> Device Protection:</label>
+                     <textarea class="form-control" rows="1" id="query12" name="query12">{{query12}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query13"><i class="fas fa-headset"></i> Tech Support:</label>
+                     <textarea class="form-control" rows="1" id="query13" name="query13">{{query13}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query14"><i class="fas fa-tv"></i> Streaming TV:</label>
+                     <textarea class="form-control" rows="1" id="query14" name="query14">{{query14}}</textarea>
+                  </div>
+                  <div class="form-group">
+                     <label for="query15"><i class="fas fa-film"></i> Streaming Movies:</label>
+                     <textarea class="form-control" rows="1" id="query15" name="query15">{{query15}}</textarea>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+         <div class="row">
+            <div class="col-md-12 text-center">
+               <button type="submit" class="btn btn-primary" name="submit">
+                  <i class="fas fa-calculator"></i> PREDICT CHURN PROBABILITY
+               </button>
+            </div>
+         </div>
+      </form>
+      
+      <div class="row mt-4">
+         <div class="col-md-12">
+            <div class="result-area">
+               <h4 class="text-center mb-3"><i class="fas fa-chart-pie"></i> Prediction Results</h4>
+               
+               <div class="prediction-graphic">
+                  <img src="https://img.freepik.com/free-vector/business-analytics-concept-illustration_114360-1554.jpg" alt="Analytics" style="max-height: 150px; margin-bottom: 15px;">
+               </div>
+               
+               <div class="form-group">
+                  <textarea class="form-control result-text" rows="2" readonly>{{output1}}</textarea>
+               </div>
+               <div class="form-group">
+                  <textarea class="form-control result-text" rows="2" readonly>{{output2}}</textarea>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+</html>
